@@ -78,9 +78,7 @@ export class StandardScaler implements BaseScaler {
 			usedX = x.deepCopy().reshape([x.shape[0], 1]);
 		}
 		const [xRows, xCols] = usedX.shape,
-			xOut = sm.tensor(new sm.util.Float16Array(usedX.elements).fill(0))
-				.astype(dtype)
-				.valueOf();
+			xOut = sm.tensor(new sm.util.Float16Array(usedX.elements).fill(0)).astype(dtype).valueOf();
 		const tmp_contig = usedX.valueOf();
 		const tmp_mean = this.mean.copy().valueOf(),
 			tmp_scale = this.scale.valueOf();
@@ -117,9 +115,7 @@ export class StandardScaler implements BaseScaler {
 			usedX = x.deepCopy().reshape([x.shape[0], 1]);
 		}
 		const [xRows, xCols] = usedX.shape,
-			xOut = sm.tensor(new sm.util.Float16Array(usedX.elements).fill(0))
-				.astype(dtype)
-				.valueOf();
+			xOut = sm.tensor(new sm.util.Float16Array(usedX.elements).fill(0)).astype(dtype).valueOf();
 		const tmp_contig = usedX.valueOf();
 		const tmp_mean = this.mean.valueOf(),
 			tmp_scale = this.scale.valueOf();
@@ -172,9 +168,9 @@ function incrementalMeanVar(
 	const updatedMean = lastSum.add(newSum).div(updatedCountTensor);
 
 	// newUnnormalizedVariance = X.var(axis=0) * newSampleCount
-	let newUnnormalizedVariance = sm.tensor(new sm.util.Float16Array(nFeatures).fill(0)).astype(
-			dtype
-		),
+	let newUnnormalizedVariance = sm
+			.tensor(new sm.util.Float16Array(nFeatures).fill(0))
+			.astype(dtype),
 		updatedUnnormalizedVariance: sm.Tensor;
 
 	const newMean = newSum.div(sm.scalar(newSampleCount).astype(dtype));
