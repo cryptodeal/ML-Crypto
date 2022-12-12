@@ -11,7 +11,7 @@ const main = async () => {
 	const candleStart = Date.now() - constants.Time.DAY * 30;
 	const tradingData = await loadTradingData(candleStart);
 	const { volumes, highs, lows } = tradingData;
-	let { closes } = await loadTradingData(candleStart);
+	let { closes } = tradingData;
 
 	const { xTrain: inputs, xTest: inputsTest } = calcTA(closes, highs, lows, volumes);
 	// Split closes to match x and x_test
@@ -29,7 +29,7 @@ const main = async () => {
 			inputNeurons: c,
 			hiddenNeurons: 32,
 			hiddenLayers: 2,
-			outputNeurons: 1
+			outputNeurons: 2
 		};
 
 	let population = nn.generatePopulation(config, 0.15, 0.1, populationSize);
@@ -48,6 +48,7 @@ const main = async () => {
 
 		for (const [j, model] of population) {
 			fitness[j] = simulation.runSimulation(model, inputs, closes);
+			console.log(`model ${j + 1}: ${fitness[j]}`);
 		}
 		const nextGenIndexes = nn.poolSelection(fitness);
 		population = nn.createNewPopulation(nextGenIndexes, population);

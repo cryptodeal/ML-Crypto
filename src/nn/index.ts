@@ -1,6 +1,5 @@
 import { rand } from '@ffi';
 import * as sm from '@shumai/shumai';
-import { leakyRelu } from '@shumai/shumai';
 import { setRandomSeed } from 'bun:jsc';
 
 setRandomSeed(Date.now());
@@ -40,7 +39,7 @@ export class NeuralNet {
 
 		// hidden layers
 		for (let i = 1; i < this.config.hiddenLayers; i++) {
-			const { weights, bias } = this.newLayer(this.config.inputNeurons, this.config.hiddenNeurons);
+			const { weights, bias } = this.newLayer(this.config.hiddenNeurons, this.config.hiddenNeurons);
 			this.wHidden.set(i, weights);
 			this.bHidden.set(i, bias);
 		}
@@ -56,8 +55,8 @@ export class NeuralNet {
 
 	public newLayer(inputs: number, outputs: number) {
 		// initialize weights and bias
-		const tempWeights = rand.normFloat64Array(inputs * outputs),
-			tempBias = rand.normFloat64Array(outputs);
+		const tempWeights = rand.normFloat32Array(inputs * outputs),
+			tempBias = rand.normFloat32Array(outputs);
 
 		return {
 			weights: sm.tensor(tempWeights).reshape([inputs, outputs]),
@@ -114,53 +113,53 @@ export class NeuralNet {
 		// inputs
 		let hiddenLayerInput = x.matmul(this.wHidden.get(0));
 		let [tempRows, tempCols] = hiddenLayerInput.shape;
-		function addBHidden(row: number, col: number) {
+		const addBHidden = (row: number, col: number) => {
 			hiddenLayerInput = hiddenLayerInput.indexedAssign(
 				hiddenLayerInput.index([row, col]).add(this.bHidden.get(0).index([0, col])),
 				[row, col]
 			);
-		}
+		};
 		for (let i = 0; i < tempRows; i++) {
 			for (let j = 0; j < tempCols; j++) {
 				addBHidden(i, j);
 			}
 		}
 
-		const inputActivations = leakyRelu(hiddenLayerInput);
+		const inputActivations = sm.leakyRelu(hiddenLayerInput);
 
 		// hidden layers
 		let last = inputActivations.copy();
 		for (let i = 1; i < this.config.hiddenLayers; i++) {
 			let hiddenLayerInput = last.matmul(this.wHidden.get(i));
-			function addBHidden(row: number, col: number) {
+			const addBHidden = (row: number, col: number) => {
 				hiddenLayerInput = hiddenLayerInput.indexedAssign(
-					hiddenLayerInput.index([row, col]).add(this.bHidden.get(0).index([i, col])),
+					hiddenLayerInput.index([row, col]).add(this.bHidden.get(i).index([0, col])),
 					[row, col]
 				);
-			}
+			};
 			const [tempRows, tempCols] = hiddenLayerInput.shape;
 			for (let i = 0; i < tempRows; i++) {
 				for (let j = 0; j < tempCols; j++) {
 					addBHidden(i, j);
 				}
 			}
-			last = leakyRelu(hiddenLayerInput);
+			last = sm.leakyRelu(hiddenLayerInput);
 		}
 
 		// output
 		let outputLayerInput = last.matmul(this.wOut);
 		[tempRows, tempCols] = outputLayerInput.shape;
-		function addBOut(row: number, col: number) {
+		const addBOut = (row: number, col: number) => {
 			outputLayerInput = outputLayerInput.indexedAssign(
-				hiddenLayerInput.index([row, col]).add(this.bOut.index([0, col])),
+				outputLayerInput.index([row, col]).add(this.bOut.index([0, col])),
 				[row, col]
 			);
-		}
+		};
 		for (let i = 0; i < tempRows; i++) {
 			for (let j = 0; j < tempCols; j++) {
 				addBOut(i, j);
 			}
 		}
-		return leakyRelu(outputLayerInput);
+		return sm.leakyRelu(outputLayerInput);
 	}
 }

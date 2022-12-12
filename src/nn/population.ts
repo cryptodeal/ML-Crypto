@@ -8,7 +8,9 @@ export const generatePopulation = (
 ) => {
 	const population: Map<number, NeuralNet> = new Map();
 	for (let i = 0; i < size; i++) {
-		population.set(i, new NeuralNet(opts, mutationRate, mutationScale));
+		const net = new NeuralNet(opts, mutationRate, mutationScale);
+		net.init();
+		population.set(i, net);
 	}
 	return population;
 };
