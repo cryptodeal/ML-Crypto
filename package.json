@@ -1,0 +1,24 @@
+{
+	"name": "ml-crypto",
+	"module": "src/index.ts",
+	"type": "module",
+	"scripts": {
+		"format": "eslint '**/*.{js,ts}' '*.{js,ts,cjs}' package.json --fix",
+    "start": "bun run src/index.ts",
+    "gen:bindings": "bash scripts/gen_bindings.sh"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.44.0",
+		"@typescript-eslint/parser": "^5.44.0",
+		"bun-types": "^0.2.2",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"eslint-plugin-simple-import-sort": "^8.0.0",
+		"prettier": "^2.8.0",
+		"typescript": "^4.9.3"
+	},
+	"dependencies": {
+		"@shumai/shumai": "^0.0.11"
+	}
+}
