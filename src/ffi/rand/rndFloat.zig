@@ -14,15 +14,31 @@ pub export fn isSeeded() bool {
     return seeded;
 }
 
-pub export fn rndNormFloat64() f64 {
+pub export fn normFloat32() f32 {
+    return rnd.random().floatNorm(f32);
+}
+
+pub export fn normFloat64() f64 {
     return rnd.random().floatNorm(f64);
 }
 
-pub export fn rndNormFloat64Array(arr: [*]f64, len: usize) void {
+pub export fn randNormFloat64() f64 {
+    return rnd.random().floatNorm(f64);
+}
+
+fn randNormFloatArray(comptime T: type, arr: [*]T, len: usize) void {
     var out = arr[0..len];
     var i: usize = 0;
     while (i < len) {
-        out[i] = rndNormFloat64();
+        out[i] = rnd.random().floatNorm(T);
         i += 1;
     }
+}
+
+pub export fn normFloat64Array(arr: [*]f64, len: usize) void {
+    randNormFloatArray(f64, arr, len);
+}
+
+pub export fn normFloat32Array(arr: [*]f32, len: usize) void {
+    randNormFloatArray(f32, arr, len);
 }

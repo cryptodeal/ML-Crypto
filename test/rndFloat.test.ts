@@ -6,10 +6,22 @@ describe('FFI `rand`', () => {
 		rand.seed(Date.now());
 		expect(rand.isSeeded()).toBe(true);
 	});
+	it('works to generate random normal float32', () => {
+		for (let i = 0; i < 100; i++) {
+			const random = rand.normFloat32();
+			expect(typeof random).toBe('number');
+		}
+	});
 	it('works to generate random normal float64', () => {
 		for (let i = 0; i < 100; i++) {
 			const random = rand.normFloat64();
 			expect(typeof random).toBe('number');
+		}
+	});
+	it('mutate underlying data for `Float32Array`', () => {
+		for (let i = 0; i < 100; i++) {
+			const arr = rand.normFloat32Array(100);
+			expect(arr instanceof Float32Array).toBe(true);
 		}
 	});
 	it('mutate underlying data for `Float64Array`', () => {
