@@ -10,13 +10,24 @@ const {
 		randInt16,
 		randInt32,
 		randInt64,
-		// randIntN,
+		randUint8,
+		randUint16,
+		randUint32,
+		randUint64,
+		randFloat32Array,
+		randExpFloat32Array,
 		randNormFloat32Array,
+		randFloat64Array,
+		randExpFloat64Array,
 		randNormFloat64Array,
 		randInt8Array,
 		randInt16Array,
 		randInt32Array,
 		randInt64Array,
+		randUint8Array,
+		randUint16Array,
+		randUint32Array,
+		randUint64Array,
 		seed: _seed,
 		isSeeded: _isSeeded
 	}
@@ -45,10 +56,34 @@ const {
 	randInt64: {
 		returns: FFIType.i64_fast
 	},
+	randUint8: {
+		returns: FFIType.u8
+	},
+	randUint16: {
+		returns: FFIType.u16
+	},
+	randUint32: {
+		returns: FFIType.u32
+	},
+	randUint64: {
+		returns: FFIType.u64
+	},
+	randFloat32Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
 	randNormFloat32Array: {
 		args: [FFIType.ptr, FFIType.u64]
 	},
+	randExpFloat32Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
+	randFloat64Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
 	randNormFloat64Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
+	randExpFloat64Array: {
 		args: [FFIType.ptr, FFIType.u64]
 	},
 	randInt8Array: {
@@ -63,12 +98,18 @@ const {
 	randInt64Array: {
 		args: [FFIType.ptr, FFIType.u64]
 	},
-	/*
-    randIntN: {
-      args: [FFIType.i64],
-      returns: FFIType.i64_fast
-    },
-  */
+	randUint8Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
+	randUint16Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
+	randUint32Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
+	randUint64Array: {
+		args: [FFIType.ptr, FFIType.u64]
+	},
 	seed: {
 		args: [FFIType.u64]
 	},
@@ -97,7 +138,20 @@ export const int32 = () => randInt32.native();
 
 export const int64 = () => randInt64.native();
 
-// export const intN = (n: number | bigint) => randIntN.native(BigInt(n));
+export const uint8 = () => randUint8.native();
+
+export const uint16 = () => randUint16.native();
+
+export const uint32 = () => randUint32.native();
+
+export const uint64 = () => randUint64.native();
+
+export const float32Array = (v: number | Float32Array) => {
+	const usedArr =
+		v instanceof Float32Array || v.constructor === Float32Array ? v : new Float32Array(v);
+	randFloat32Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
 
 export const normFloat32Array = (v: number | Float32Array) => {
 	const usedArr =
@@ -106,10 +160,31 @@ export const normFloat32Array = (v: number | Float32Array) => {
 	return usedArr;
 };
 
+export const expFloat32Array = (v: number | Float32Array) => {
+	const usedArr =
+		v instanceof Float32Array || v.constructor === Float32Array ? v : new Float32Array(v);
+	randExpFloat32Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
+
+export const float64Array = (v: number | Float64Array) => {
+	const usedArr =
+		v instanceof Float64Array || v.constructor === Float64Array ? v : new Float64Array(v);
+	randFloat64Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
+
 export const normFloat64Array = (v: number | Float64Array) => {
 	const usedArr =
 		v instanceof Float64Array || v.constructor === Float64Array ? v : new Float64Array(v);
 	randNormFloat64Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
+
+export const expFloat64Array = (v: number | Float64Array) => {
+	const usedArr =
+		v instanceof Float64Array || v.constructor === Float64Array ? v : new Float64Array(v);
+	randExpFloat64Array.native(ptr(usedArr), BigInt(usedArr.length));
 	return usedArr;
 };
 
@@ -135,5 +210,32 @@ export const int64Array = (v: number | BigInt64Array) => {
 	const usedArr =
 		v instanceof BigInt64Array || v.constructor === BigInt64Array ? v : new BigInt64Array(v);
 	randInt64Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
+
+export const uint8Array = (v: number | Uint8Array) => {
+	const usedArr = v instanceof Uint8Array || v.constructor === Uint8Array ? v : new Uint8Array(v);
+	randUint8Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
+
+export const uint16Array = (v: number | Uint16Array) => {
+	const usedArr =
+		v instanceof Uint16Array || v.constructor === Uint16Array ? v : new Uint16Array(v);
+	randUint16Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
+
+export const uint32Array = (v: number | Uint32Array) => {
+	const usedArr =
+		v instanceof Uint32Array || v.constructor === Uint32Array ? v : new Uint32Array(v);
+	randUint32Array.native(ptr(usedArr), BigInt(usedArr.length));
+	return usedArr;
+};
+
+export const uint64Array = (v: number | BigUint64Array) => {
+	const usedArr =
+		v instanceof BigUint64Array || v.constructor === BigUint64Array ? v : new BigUint64Array(v);
+	randUint64Array.native(ptr(usedArr), BigInt(usedArr.length));
 	return usedArr;
 };
