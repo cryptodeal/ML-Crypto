@@ -64,7 +64,7 @@ const main = async () => {
 		}
 
 		// test best model on test data
-		const testResult = simulation.runSimulation(population[maxIdx], inputsTest, closesTest);
+		const testResult = simulation.runSimulation(population.get(maxIdx), inputsTest, closesTest);
 		const elapsed = Date.now() - start;
 		console.log(
 			`${dayjs().format('MM-DD-YYYY HH:mm:ss')}\t${elapsed / Time.SECOND}sec\tEpisode: ${String(
