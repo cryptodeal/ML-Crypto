@@ -20,7 +20,7 @@ Only macOS and Linux are supported. Linux installs default to GPU computation wi
 
 ### Building FFI Bindings
 
-This demo project leverages [Bun's FFI](https://github.com/oven-sh/bun#bunffi-foreign-functions-interface) and [Zig](https://ziglang.org) to execute native code helpers (specifically, Zig's random # generator). Accordingly, you'll need to ensure `Zig` is installed in order to build the bindings; refer to the [Zig installation guide](https://ziglang.org/learn/getting-started/#installing-zig) for more details.
+This demo project leverages [Bun's FFI](https://github.com/oven-sh/bun#bunffi-foreign-functions-interface) and [Zig](https://ziglang.org) to execute native code helpers (specifically leveraging `Zig`'s `std.rand` to randomly init weights/biases). Accordingly, you'll need to ensure `Zig` is installed in order to build the bindings; refer to the [Zig installation guide](https://ziglang.org/learn/getting-started/#installing-zig) for more details.
 
 Once Zig is installed, you can build the bindings locally by running the following from the root directory of the project:
 

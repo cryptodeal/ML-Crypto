@@ -25,6 +25,11 @@ export class Wallet {
 		}
 	}
 
+	// TODO: HODL - Hold On for Dear Life; don't buy or sell
+	public hodlSignal() {
+		return;
+	}
+
 	public getReturn() {
 		return (this.balance / this.startingBalance - 1) * 100;
 	}

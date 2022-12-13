@@ -9,7 +9,7 @@ export const runSimulation = (model: NeuralNet, inputs: sm.Tensor, prices: numbe
 	const priceLen = prices.length;
 	for (let i = 0; i < priceLen; i++) {
 		// buy or sell signal
-		if (modelOutputs.index([i, 0]).valueOf() > modelOutputs.index([i, 1])) {
+		if (modelOutputs.index([i, 0]).valueOf() > modelOutputs.index([i, 1]).valueOf()) {
 			wallet.buySignal(prices[i]);
 		} else {
 			wallet.sellSignal(prices[i]);
