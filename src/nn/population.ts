@@ -96,7 +96,7 @@ export const createNewPopulation = (indexes: number[], lastGen: Map<number, Neur
 		newPopulation.set(i, lastGen.get(index).copy());
 		// do not mutate previous best
 		if (i !== 0) {
-			newPopulation[i].mutate();
+			newPopulation.get(i).mutate();
 		}
 	}
 	return newPopulation;

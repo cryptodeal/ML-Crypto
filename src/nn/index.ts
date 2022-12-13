@@ -113,17 +113,7 @@ export class NeuralNet {
 		// inputs
 		let hiddenLayerInput = x.matmul(this.wHidden.get(0));
 		let [tempRows, tempCols] = hiddenLayerInput.shape;
-		const addBHidden = (row: number, col: number) => {
-			hiddenLayerInput = hiddenLayerInput.indexedAssign(
-				hiddenLayerInput.index([row, col]).add(this.bHidden.get(0).index([0, col])),
-				[row, col]
-			);
-		};
-		for (let i = 0; i < tempRows; i++) {
-			for (let j = 0; j < tempCols; j++) {
-				addBHidden(i, j);
-			}
-		}
+		hiddenLayerInput = hiddenLayerInput.add(this.bHidden.get(0));
 
 		const inputActivations = sm.leakyRelu(hiddenLayerInput);
 
