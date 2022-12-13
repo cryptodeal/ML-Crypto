@@ -112,9 +112,7 @@ export class NeuralNet {
 	public predict(x: sm.Tensor) {
 		// inputs
 		let hiddenLayerInput = x.matmul(this.wHidden.get(0));
-		let [tempRows, tempCols] = hiddenLayerInput.shape;
 		hiddenLayerInput = hiddenLayerInput.add(this.bHidden.get(0));
-
 		const inputActivations = sm.leakyRelu(hiddenLayerInput);
 
 		// hidden layers
@@ -125,19 +123,7 @@ export class NeuralNet {
 		}
 
 		// output
-		let outputLayerInput = last.matmul(this.wOut);
-		[tempRows, tempCols] = outputLayerInput.shape;
-		const addBOut = (row: number, col: number) => {
-			outputLayerInput = outputLayerInput.indexedAssign(
-				outputLayerInput.index([row, col]).add(this.bOut.index([0, col])),
-				[row, col]
-			);
-		};
-		for (let i = 0; i < tempRows; i++) {
-			for (let j = 0; j < tempCols; j++) {
-				addBOut(i, j);
-			}
-		}
+		const outputLayerInput = last.matmul(this.wOut).add(this.bOut);
 		return sm.leakyRelu(outputLayerInput);
 	}
 }
