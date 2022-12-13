@@ -55,8 +55,8 @@ export class NeuralNet {
 
 	public newLayer(inputs: number, outputs: number) {
 		// initialize weights and bias
-		const tempWeights = rand.normFloat32Array(inputs * outputs),
-			tempBias = rand.normFloat32Array(outputs);
+		const tempWeights = rand.normFloat64Array(inputs * outputs),
+			tempBias = rand.normFloat64Array(outputs);
 
 		return {
 			weights: sm.tensor(tempWeights).reshape([inputs, outputs]),

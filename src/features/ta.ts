@@ -48,17 +48,17 @@ export const calcTA = (
 	}
 	values = [...values, ...cci];
 	signalCnt++;
-	const transposed = sm.tensor(new Float32Array(values)).reshape([signalCnt, closes.length]).T();
+	const transposed = sm.tensor(new Float64Array(values)).reshape([signalCnt, closes.length]).T();
 	const denseInputs = transposed.deepCopy();
 
 	// Split test and train
 	const [nSamples, nFeatures] = denseInputs.shape;
 	const splitIdx = nSamples / 2;
 	let xTrain = sm
-		.tensor(new Float32Array(splitIdx * nFeatures).fill(0))
+		.tensor(new Float64Array(splitIdx * nFeatures).fill(0))
 		.reshape([splitIdx, nFeatures]);
 	let xTest = sm
-		.tensor(new Float32Array((nSamples - splitIdx) * nFeatures).fill(0))
+		.tensor(new Float64Array((nSamples - splitIdx) * nFeatures).fill(0))
 		.reshape([nSamples - splitIdx, nFeatures]);
 
 	for (let i = 0; i < nSamples; i++) {
